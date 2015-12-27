@@ -1,19 +1,15 @@
-import Data.List (find)
+import Data.List (sort)
 
-main = print $ largestPalProd 3
+main = print $ largestPalProd 100 999
 
-largestPalProd :: Int -> Int
-largestPalProd numDigits = multiplyOutward max max
-  where max = 10^(numDigits+1) - 1
-
-multiplyOutward :: Int -> Int -> Int
-multiplyOutward start max = case firstPalProd of
-  Nothing -> multiplyOutward (start-1) max
-  Just a -> a
-  where firstPalProd = find isPalindrome products
-        products = if even start
-          then zipWith (*) [start, start-1..] [start+1..max]
-          else zipWith (*) [start, start-1..] [start..max]
+largestPalProd :: Int -> Int -> Int
+largestPalProd start stop =
+  last . sort $ [
+    i*j | i <- [start..stop],
+          j <- [start..stop],
+          i<=j,
+          isPalindrome $ i*j
+    ]
 
 isPalindrome :: Int -> Bool
 isPalindrome n =
